@@ -2,9 +2,12 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AdminModule } from './admin/admin.module';
+import { Pricing } from './pricing/pricing.entity';
+import { Admin } from './admin/admin.entity';
 
 @Module({
-  imports: [
+  imports: [AdminModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -16,7 +19,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       synchronize: true,
     }
   ),
-  TypeOrmModule.forFeature([])
+  TypeOrmModule.forFeature([Admin, Pricing])
   ],
   controllers: [AppController],
   providers: [AppService],
