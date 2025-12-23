@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/api';
 
-import LogoutButton from './LogoutButton';
 
 const PriceSetting: React.FC = () => {
     const [ratePerUnit, setRatePerUnit] = useState(0);
@@ -19,14 +18,34 @@ const PriceSetting: React.FC = () => {
         fetchConfig();
     }, []);
 
-    const handleUpdate = async () => {
-        try {
-        const res = await api.put('/util/updatepricing', { ratePerUnit, vatPercentage, serviceCharge });
-        setMessage('Pricing updated successfully!');
-        } catch (err: any) {
-        setMessage(err.response?.data?.message || 'Update failed');
+        const handleUpdate = async () => {
+        // Convert to numbers just before sending
+        const payload = {
+            ratePerUnit: Number(ratePerUnit),
+            vatPercentage: Number(vatPercentage),
+            serviceCharge: Number(serviceCharge),
+        };
+
+        // Frontend validation
+        if (
+            payload.ratePerUnit < 0 ||
+            payload.serviceCharge < 0 ||
+            payload.vatPercentage < 0 ||
+            payload.vatPercentage > 100 ||
+            Object.values(payload).some(isNaN)
+        ) {
+            setMessage("Please enter valid values (VAT 0–100, no negatives)");
+            return;
         }
-    };
+
+        try {
+            await api.put("/util/updatepricing", payload);
+            setMessage("Pricing updated successfully!");
+        } catch (err: any) {
+            setMessage(err.response?.data?.message || "Update failed");
+        }
+        };
+
 
     return (
         <div className="relative min-h-screen bg-gray-50">
