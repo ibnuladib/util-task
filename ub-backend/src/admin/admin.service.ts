@@ -16,11 +16,11 @@ export class AdminService {
 
       async validateAdmin(username: string, pin: string): Promise<Admin> {
         const admin = await this.adminRepository.findOne({
-        where: { username },
+        where: {username: username},
         });
 
         if (!admin) {
-        throw new UnauthorizedException('Invalid admin credentials');
+        throw new UnauthorizedException('admin not found');
         }
 
         const Valid = await bcrypt.compare(pin, admin.pin);
@@ -38,7 +38,7 @@ export class AdminService {
             vatPercentage: number,
             serviceCharge: number,
         ): Promise<Pricing> {
-            const existingConfig = await this.pricingRepository.findOne({});
+            const existingConfig = await this.pricingRepository.findOneBy({});
 
             if (!existingConfig) {
             // Create once
@@ -59,13 +59,13 @@ export class AdminService {
     }
 
     async getPricingConfig(): Promise<Pricing> {
-        const config = await this.pricingRepository.findOne({});
+        const pricing = await this.pricingRepository.findOneBy({});
 
-        if (!config) {
+        if (!pricing) {
         throw new NotFoundException('Pricing configuration not set');
         }
 
-        return config;
+        return pricing;
     }
 
 

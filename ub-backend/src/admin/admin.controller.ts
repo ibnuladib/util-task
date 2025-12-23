@@ -35,7 +35,7 @@ export class AdminController {
         };
     }
 
-    @Get('pricing')
+    @Get('getpricing')
     async getPricing() {
         const pricing = await this.adminService.getPricingConfig();
         return pricing;
@@ -44,20 +44,29 @@ export class AdminController {
     @Post("calculate")
     async calculateBill(
         @Body("units") units: number,
-    ) {
+    )
+    {
         const pricing = await this.adminService.getPricingConfig();
-        const base = units * pricing.ratePerUnit;
-        const vatAmount = base* (pricing.vatPercentage/ 100);
-        const totalAmount = base + vatAmount + pricing.serviceCharge; 
+        console.log(pricing);
+
+        const ratePerUnit = Number(pricing.ratePerUnit);
+        const vatPercentage = Number(pricing.vatPercentage);
+        const serviceCharge = Number(pricing.serviceCharge);
+
+        const base = units * ratePerUnit;
+        const vatAmount = base * (vatPercentage / 100);
+        const totalAmount = base + vatAmount + serviceCharge;
+
         return {
             units,
-            ratePerUnit: pricing.ratePerUnit,
+            ratePerUnit,
             base,
-            vatPercentage: pricing.vatPercentage,
+            vatPercentage,
             vatAmount,
-            serviceCharge: pricing.serviceCharge,
-            totalAmount,
+            serviceCharge,
+            totalAmount
         };
     }
+
 
 }
