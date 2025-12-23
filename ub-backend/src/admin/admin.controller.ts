@@ -8,24 +8,12 @@ import { CalculateBillDto } from "./calculatebill.dto";
 export class AdminController {
     constructor(private readonly adminService: AdminService) {}
     
-    // @Post('login')
-    // async login(
-    //     @Body("username") username: string,
-    //     @Body("pin") pin: string,
-    // ) {
-    //     const admin = await this.adminService.validateAdmin(username, pin);
-        
-    //     return { message: "Login successful", adminId: admin.id };
-    // }
 
     @UseGuards(AuthGuard)
     @Put('updatepricing')
     @UsePipes(new ValidationPipe())
     async updatePricing(
         @Body() dto: UpdatePricingDto,
-        // @Body("ratePerUnit") ratePerUnit: number,
-        // @Body("vatPercentage") vatPercentage: number,
-        // @Body("serviceCharge") serviceCharge: number,
     ) {
         const { ratePerUnit, vatPercentage, serviceCharge } = dto;
         const pricing = await this.adminService.upsertPricingConfig(

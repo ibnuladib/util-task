@@ -14,16 +14,6 @@ function App() {
         <Route path="/login" element={<AdminLoginPage />} />
         <Route path="/admin/pricing" element={<PriceSetting />} />
 
-
-        {/* Admin only
-        <Route
-          path="/admin/pricing"
-          element={
-            <Route>
-              <PriceSetting />
-            </Route>
-          }
-        /> */}
       </Routes>
     </Router>
   );
