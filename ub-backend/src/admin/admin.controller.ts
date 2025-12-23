@@ -1,6 +1,8 @@
-import { Body, Get, Put, Post, Controller, UseGuards } from "@nestjs/common";
+import { Body, Get, Put, Post, Controller, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { AdminService } from "./admin.service";
 import { AuthGuard } from "src/auth/auth.guard";
+import { UpdatePricingDto } from "./updatepricing.dto";
+import { CalculateBillDto } from "./calculatebill.dto";
 
 @Controller("util")
 export class AdminController {
@@ -18,17 +20,19 @@ export class AdminController {
 
     @UseGuards(AuthGuard)
     @Put('updatepricing')
+    @UsePipes(new ValidationPipe())
     async updatePricing(
-        @Body("ratePerUnit") ratePerUnit: number,
-        @Body("vatPercentage") vatPercentage: number,
-        @Body("serviceCharge") serviceCharge: number,
+        @Body() dto: UpdatePricingDto,
+        // @Body("ratePerUnit") ratePerUnit: number,
+        // @Body("vatPercentage") vatPercentage: number,
+        // @Body("serviceCharge") serviceCharge: number,
     ) {
+        const { ratePerUnit, vatPercentage, serviceCharge } = dto;
         const pricing = await this.adminService.upsertPricingConfig(
             ratePerUnit,
             vatPercentage,
             serviceCharge,
         ); 
-
         return {
             message: "Pricing configuration updated successfully",
             pricing
@@ -42,10 +46,13 @@ export class AdminController {
     }
 
     @Post("calculate")
+    @UsePipes(new ValidationPipe())
     async calculateBill(
-        @Body("units") units: number,
+            // @Body("units") units: number,
+            @Body() dto: CalculateBillDto
     )
     {
+        const { units } = dto;
         const pricing = await this.adminService.getPricingConfig();
         console.log(pricing);
 

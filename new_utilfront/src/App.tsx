@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import PriceSetting from "./pages/PriceSettingPage";
-import ProtectedRoute from "./routes/ProtectedRoute";
 import Calculator from "./pages/BillCalculatorPage";
 import "./App.css"
 import "./index.css"

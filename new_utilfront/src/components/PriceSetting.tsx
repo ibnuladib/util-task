@@ -29,17 +29,63 @@ const PriceSetting: React.FC = () => {
     };
 
     return (
-        <><div className="flex justify-end mb-4">
-            <LogoutButton />
-        </div><div className="max-w-md mx-auto mt-20 p-6 border rounded shadow">
-                <h2 className="text-xl mb-4">Update Pricing</h2>
-                <input type="number" value={ratePerUnit} onChange={(e) => setRatePerUnit(+e.target.value)} className="w-full mb-2 p-2 border rounded" placeholder="Rate per Unit" />
-                <input type="number" value={vatPercentage} onChange={(e) => setVatPercentage(+e.target.value)} className="w-full mb-2 p-2 border rounded" placeholder="VAT %" />
-                <input type="number" value={serviceCharge} onChange={(e) => setServiceCharge(+e.target.value)} className="w-full mb-2 p-2 border rounded" placeholder="Service Charge" />
-                <button onClick={handleUpdate} className="w-full bg-green-500 text-white p-2 rounded">Update</button>
-                {message && <p className="mt-2">{message}</p>}
-            </div></>
+        <div className="relative min-h-screen bg-gray-50">
+
+
+        {/* Pricing card */}
+        <div className="max-w-md mx-auto mt-24 p-8 bg-white border border-gray-200 rounded-lg shadow-md">
+            <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">Update Pricing</h2>
+
+            <div className="space-y-4">
+            <div>
+                <label className="block text-gray-700 mb-1">Rate per Unit</label>
+                <input
+                type="number"
+                value={ratePerUnit}
+                onChange={(e) => setRatePerUnit(+e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+                placeholder="Rate per Unit"
+                />
+            </div>
+
+            <div>
+                <label className="block text-gray-700 mb-1">VAT Percentage (%)</label>
+                <input
+                type="number"
+                value={vatPercentage}
+                onChange={(e) => setVatPercentage(+e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+                placeholder="VAT %"
+                />
+            </div>
+
+            <div>
+                <label className="block text-gray-700 mb-1">Service Charge</label>
+                <input
+                type="number"
+                value={serviceCharge}
+                onChange={(e) => setServiceCharge(+e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+                placeholder="Service Charge"
+                />
+            </div>
+            </div>
+
+            <button
+            onClick={handleUpdate}
+            className="w-full mt-6 py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-green-600 transition-colors"
+            >
+            Update
+            </button>
+
+            {message && (
+            <p className="mt-4 text-center text-gray-700">{message}</p>
+            )}
+        </div>
+        </div>
+
     );
+
 };
 
 export default PriceSetting;
