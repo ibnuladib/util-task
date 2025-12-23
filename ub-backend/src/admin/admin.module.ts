@@ -5,12 +5,21 @@ import { Admin } from './admin.entity';
 import { AdminService } from './admin.service';
 import { AdminController } from './admin.controller';
 import { AdminSeedService } from './adminseed.service';
+import { AuthModule } from 'src/auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from 'src/auth/constants';
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Admin, Pricing])],
+  imports: [
+        JwtModule.register({
+            global: true,
+            secret: jwtConstants.secret,
+            signOptions: { expiresIn: jwtConstants.expiresIn },
+        }),
+    TypeOrmModule.forFeature([Admin, Pricing])],
   providers: [AdminService, AdminSeedService],
   controllers: [AdminController],
-  exports: [],
+  exports: [AdminService],
 })
 export class AdminModule {}

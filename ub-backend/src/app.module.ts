@@ -6,6 +6,7 @@ import { AdminModule } from './admin/admin.module';
 import { Pricing } from './pricing/pricing.entity';
 import { Admin } from './admin/admin.entity';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
     }),
     AdminModule,
+    AuthModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',

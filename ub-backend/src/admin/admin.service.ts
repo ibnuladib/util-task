@@ -19,43 +19,43 @@ export class AdminService {
         where: { username },
         });
 
-        if (!admin || admin.pin !== pin) {
+        if (!admin) {
         throw new UnauthorizedException('Invalid admin credentials');
         }
 
         const Valid = await bcrypt.compare(pin, admin.pin);
 
         if (!Valid) {
-            throw new UnauthorizedException('Invalid admin credentials');
+            throw new UnauthorizedException('Invalid pin credentials');
         }
 
         return admin;
     }
 
 
-      async upsertPricingConfig(
-        ratePerUnit: number,
-        vatPercentage: number,
-        serviceCharge: number,
-    ): Promise<Pricing> {
-        const existingConfig = await this.pricingRepository.findOne({});
+    async upsertPricingConfig(
+            ratePerUnit: number,
+            vatPercentage: number,
+            serviceCharge: number,
+        ): Promise<Pricing> {
+            const existingConfig = await this.pricingRepository.findOne({});
 
-        if (!existingConfig) {
-        // Create once
-        const pricing = this.pricingRepository.create({
-            ratePerUnit,
-            vatPercentage,
-            serviceCharge,
-        });
-        return this.pricingRepository.save(pricing);
-        }
+            if (!existingConfig) {
+            // Create once
+            const pricing = this.pricingRepository.create({
+                ratePerUnit,
+                vatPercentage,
+                serviceCharge,
+            });
+            return this.pricingRepository.save(pricing);
+            }
 
-        // Update existing
-        existingConfig.ratePerUnit = ratePerUnit;
-        existingConfig.vatPercentage = vatPercentage;
-        existingConfig.serviceCharge = serviceCharge;
+            // Update existing
+            existingConfig.ratePerUnit = ratePerUnit;
+            existingConfig.vatPercentage = vatPercentage;
+            existingConfig.serviceCharge = serviceCharge;
 
-        return this.pricingRepository.save(existingConfig);
+            return this.pricingRepository.save(existingConfig);
     }
 
     async getPricingConfig(): Promise<Pricing> {

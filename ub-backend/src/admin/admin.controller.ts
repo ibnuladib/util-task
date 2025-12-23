@@ -1,22 +1,23 @@
-import { Body, Get, Put, Post, Controller } from "@nestjs/common";
+import { Body, Get, Put, Post, Controller, UseGuards } from "@nestjs/common";
 import { AdminService } from "./admin.service";
+import { AuthGuard } from "src/auth/auth.guard";
 
 @Controller("util")
 export class AdminController {
     constructor(private readonly adminService: AdminService) {}
     
-    @Post('login')
-    async login(
-        @Body("username") username: string,
-        @Body("pin") pin: string,
-    ) {
-        const admin = await this.adminService.validateAdmin(username, pin);
+    // @Post('login')
+    // async login(
+    //     @Body("username") username: string,
+    //     @Body("pin") pin: string,
+    // ) {
+    //     const admin = await this.adminService.validateAdmin(username, pin);
         
-        return { message: "Login successful", adminId: admin.id };
-    }
+    //     return { message: "Login successful", adminId: admin.id };
+    // }
 
-
-    @Put('pricing')
+    @UseGuards(AuthGuard)
+    @Put('updatepricing')
     async updatePricing(
         @Body("ratePerUnit") ratePerUnit: number,
         @Body("vatPercentage") vatPercentage: number,
